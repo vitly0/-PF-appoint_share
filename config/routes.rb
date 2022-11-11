@@ -1,12 +1,16 @@
 Rails.application.routes.draw do
+  namespace :public do
+    get 'end_user/worked'
+  end
   scope module: :public do
     root 'homes#top'
     get 'about' => "homes#about"
-    get 'end_users/users' => 'end_users#show', as: 'user_page'
-    get 'end_users/users/index' => 'end_users#index', as: 'user_index'
+    get 'end_users/users/:id' => 'end_users#show', as: 'user_page'
+    get 'end_users/users' => 'end_users#index', as: 'user_index'
     # end_users/editのようにするとdeviseのルーティングとかぶってしまうためinformationを付け加えている。
-    get 'end_users/information/edit' => 'end_users#edit', as: 'edit_information'
+    get 'end_users/information/edit/:id' => 'end_users#edit', as: 'edit_information'
     patch 'end_users/information' => 'end_users#update', as: 'update_information'
+    patch 'end_users/users' => 'end_users#worked', as: 'update_worked'
   end
   devise_for :end_users, controllers: {
     sessions: 'public/sessions',

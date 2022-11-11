@@ -46,11 +46,11 @@ class Public::RegistrationsController < Devise::RegistrationsController
   end
   
   def after_sign_up_path_for(resource)
-    user_page_path
+    user_page_path(current_end_user.id)
   end
 
   def after_update_path_for(resource)
-    user_page_path
+    user_page_path(current_end_user.id)
   end
 
   # If you have extra params to permit, append them to the sanitizer.

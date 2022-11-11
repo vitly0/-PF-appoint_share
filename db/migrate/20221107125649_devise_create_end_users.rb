@@ -47,7 +47,7 @@ class DeviseCreateEndUsers < ActiveRecord::Migration[6.1]
 
     add_index :end_users, :email,                unique: true
     add_index :end_users, :reset_password_token, unique: true
-    add_index :end_users, :first_name,   unique: true
-    add_index :end_users, :last_name,   unique: true
+    add_index :end_users, :first_name
+    add_index :end_users, :last_name
   end
 end

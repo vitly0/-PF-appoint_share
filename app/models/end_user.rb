@@ -11,4 +11,18 @@ class EndUser < ApplicationRecord
   validates :department_name, presence: true
   validates :work_location, presence: true
   validates :telephone_number, presence: true, format: { with: /\A\d{10,11}\z/ }
+  
+  has_one_attached :profile_image
+  
+  def get_profile_image
+    (profile_image.attached?) ? profile_image : 'no_image.jpg'
+  end
+  
+  def full_name
+    first_name + " " + last_name
+  end
+
+  def full_name_kana
+    first_name_kana + " " + last_name_kana
+  end
 end
