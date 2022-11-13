@@ -1,0 +1,30 @@
+<div class='container'>
+<div class='row'>
+<div class='col-3'>
+	<%= link_to "社員一覧",user_index_path %>
+	<%= link_to "予定投稿",new_schedule_path %>
+</div>
+<div class="col-8">
+	<section class="inner">
+		<h1><%= @schedule.title %></h1>
+		<a><%= image_tag @schedule.get_schedule_image, size: '200x250' %></a>
+		<p><%= @schedule.body %></p>
+		<p><%= @schedule.full_day %></p>
+		<p><%= @schedule.location %></p>
+		<%= link_to "編集", edit_schedule_path(@schedule.id) %>
+		<h2>コメントをする</h2>
+		<%= form_with(model: [@schedule, @schedule_comment], method: :post) do |f| %>
+			<%= f.text_area :comment, rows: '2', cols: '20' %>
+			<%= f.hidden_field :schedule_id, value: @schedule.id %>
+    	<%= f.submit "送信" %>
+    <% end %>
+    <p>打ち合わせコメント</p>
+    <% @schedule_comments.each do |schedule_comment| %>
+    	<%= @schedule_comment.end_user.full_name %>
+      <%= schedule_comment.comment %>
+      <%= link_to "削除", schedule_schedule_comment_path(@schedule, schedule_comment), method: :delete %>
+    <% end %>
+	</section>
+</div>
+</div>
+</div>

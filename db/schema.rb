@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_07_125649) do
+ActiveRecord::Schema.define(version: 2022_11_12_184344) do
 
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
@@ -63,6 +63,30 @@ ActiveRecord::Schema.define(version: 2022_11_07_125649) do
     t.index ["reset_password_token"], name: "index_end_users_on_reset_password_token", unique: true
   end
 
+  create_table "schedule_comments", force: :cascade do |t|
+    t.text "comment"
+    t.integer "end_user_id", null: false
+    t.integer "schedule_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["end_user_id"], name: "index_schedule_comments_on_end_user_id"
+    t.index ["schedule_id"], name: "index_schedule_comments_on_schedule_id"
+  end
+
+  create_table "schedules", force: :cascade do |t|
+    t.integer "end_user_id"
+    t.string "title"
+    t.text "body"
+    t.integer "year"
+    t.integer "month"
+    t.integer "day"
+    t.string "location"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "schedule_comments", "end_users"
+  add_foreign_key "schedule_comments", "schedules"
 end

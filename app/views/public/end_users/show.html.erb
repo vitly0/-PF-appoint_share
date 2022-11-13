@@ -1,7 +1,10 @@
 <div class='container'>
 <div class='row'>
 <div class='col-3'>
-	<%= link_to "社員一覧",user_index_path, action: 'index' %>
+	<%= link_to "社員一覧",user_index_path %>
+	<%= link_to "予定投稿",new_schedule_path %>
+	<%= link_to '投稿予定一覧', schedules_path %>
+	<%= link_to '予定一覧', user_schedule_path(@end_user.id) %>
 </div>
 <div class="col-8">
 <% if @end_user == current_end_user %>

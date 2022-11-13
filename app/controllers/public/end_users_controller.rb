@@ -2,6 +2,11 @@ class Public::EndUsersController < ApplicationController
   def index
     @end_users = EndUser.all
   end
+  
+  def schedule_index
+    @end_user = EndUser.find(params[:id])
+    @schedules = @end_user.schedules
+  end
 
   def show
     @end_user = EndUser.find(params[:id])
