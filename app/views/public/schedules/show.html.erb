@@ -12,17 +12,42 @@
 		<p><%= @schedule.full_day %></p>
 		<p><%= @schedule.location %></p>
 		<%= link_to "編集", edit_schedule_path(@schedule.id) %>
-		<h2>コメントをする</h2>
+		<h2>コメントする</h2>
 		<%= form_with(model: [@schedule, @schedule_comment], method: :post) do |f| %>
 			<%= f.text_area :comment, rows: '2', cols: '20' %>
 			<%= f.hidden_field :schedule_id, value: @schedule.id %>
     	<%= f.submit "送信" %>
     <% end %>
-    <p>打ち合わせコメント</p>
+    <p>コメント</p>
     <% @schedule_comments.each do |schedule_comment| %>
-    	<%= @schedule_comment.end_user.full_name %>
+    	<%= schedule_comment.end_user.full_name %>
       <%= schedule_comment.comment %>
       <%= link_to "削除", schedule_schedule_comment_path(@schedule, schedule_comment), method: :delete %>
+    <% end %>
+    <h2>報告する</h2>
+		<%= form_with(model: [@schedule, @report], method: :post) do |f| %>
+			<%= f.text_area :comment, rows: '2', cols: '20' %>
+			<%= f.hidden_field :schedule_id, value: @schedule.id %>
+    	<%= f.submit "送信" %>
+    <% end %>
+    <p>打ち合わせコメント</p>
+    <% @reports.each do |report| %>
+    	<%= report.end_user.full_name %>
+      <%= report.comment %>
+      <%= link_to "削除", schedule_report_path(@schedule, report), method: :delete %>
+    <% end %>
+    <% if @schedule.attended?(current_end_user) %>
+      <%= link_to schedule_attends_path(@schedule.id), method: :delete do %>
+          <span style="color:red;">❤︎<%= @schedule.attends.count %></span>
+      <% end %>
+		<% else %>
+      <%= link_to schedule_attends_path(@schedule.id), method: :post do %>
+          <span>❤︎<%= @schedule.attends.count %></span>
+      <% end %>
+    <% end %>
+    <p>参加者</p>
+    <% @attends.each do |attend| %>
+      <%= attend.end_user.full_name %>
     <% end %>
 	</section>
 </div>

@@ -6,6 +6,8 @@ class EndUser < ApplicationRecord
          
   has_many :schedules, dependent: :destroy
   has_many :schedule_comments, dependent: :destroy
+  has_many :reports, dependent: :destroy
+  has_many :attends, dependent: :destroy
   
   validates :last_name, presence: true
   validates :first_name, presence: true

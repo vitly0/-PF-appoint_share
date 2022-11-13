@@ -14,6 +14,8 @@ Rails.application.routes.draw do
     patch 'end_users/users' => 'end_users#worked', as: 'update_worked'
     resources :schedules, only: [:new, :create, :index, :show, :edit, :destroy, :update] do
       resources :schedule_comments, only: [:create, :destroy]
+      resources :reports, only: [:create, :destroy]
+      resource :attends, only: [:create, :destroy]
     end
   end
   devise_for :end_users, controllers: {
