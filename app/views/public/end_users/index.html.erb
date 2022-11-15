@@ -11,18 +11,34 @@
       <th>Image</th>
       <th>部署名</th>
       <th>Name</th>
+      <% if current_end_user.full_name != "guest user" %>
+        <th>フォロー</th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
     <% @end_users.each do |end_user| %>
-      <tr>
-        <td><%= link_to user_page_path(end_user.id) do %><%= image_tag end_user.get_profile_image, size: '50x50' %><% end %></td>
-        <td><%= link_to user_page_path(end_user.id) do %><%= end_user.department_name %><% end %></td>
-        <td><%= link_to user_page_path(end_user.id) do %><%= end_user.full_name %><% end %></td>
-      </tr>
+      <% if end_user.full_name != "guest user" %>
+        <tr>
+          <td><%= link_to user_page_path(end_user.id) do %><%= image_tag end_user.get_profile_image, size: '50x50' %><% end %></td>
+          <td><%= link_to user_page_path(end_user.id) do %><%= end_user.department_name %><% end %></td>
+          <td><%= link_to user_page_path(end_user.id) do %><%= end_user.full_name %><% end %></td>
+          <% if current_end_user.full_name != "guest user" %>
+            <td>
+              <% if end_user != current_end_user %>
+                <% if current_end_user.following?(end_user) %>
+                  <%= link_to "フォロー外す", end_user_relationships_path(end_user.id), method: :delete %>
+                <% else %>
+                  <%= link_to "フォローする", end_user_relationships_path(end_user.id), method: :post %>
+                <% end %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
-</table>
+      </table>
     </div>
   </div>
 </div>

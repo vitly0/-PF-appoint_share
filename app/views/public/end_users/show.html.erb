@@ -1,75 +1,62 @@
 <div class='container'>
 <div class='row'>
-<div class='col-3'>
-	<%= link_to "社員一覧",user_index_path %>
-	<%= link_to "予定投稿",new_schedule_path %>
-	<%= link_to '投稿予定一覧', schedules_path %>
-	<%= link_to '予定一覧', user_schedule_path(@end_user.id) %>
-</div>
-<div class="col-8">
+<div class="col-10">
 <% if @end_user == current_end_user %>
-	<h1>マイページ</h1>
+	<h1 class="pt-5 pl-3">マイページ</h1>
 <% else %>
-  <h1>社員情報</h1>
+  <h1 class="pt-5 pl-3">社員情報</h1>
 <% end %>
 	<section class="inner">
-		<table class="end_user_info">
-			<thead>
-				<th></th>
-				<th></th>
-				<th></th>
-			</thead>
-			<tbody>
-				<tr>
-					<td><%= image_tag @end_user.get_profile_image, size: '50x50' %></td>
-				</tr>
-				<tr>
-					<td>名前</td>
-					<td>(姓) <%= @end_user.first_name %></td>
-					<td>(名) <%= @end_user.last_name %></td>
-				</tr>
-				<tr>
-					<td>フリガナ</td>
-					<td>(セイ) <%= @end_user.first_name_kana %></td>
-					<td>(メイ) <%= @end_user.last_name_kana %></td>
-				</tr>
-				<tr>
-					<td>メールアドレス</td>
-					<td colspan="2"><%= @end_user.email %></td>
-				</tr>
-				<tr>
-					<td>部署名</td>
-					<td colspan="2"><%= @end_user.department_name %></td>
-				</tr>
-				<tr>
-					<td>勤務地</td>
-					<td colspan="2"><%= @end_user.work_location %></td>
-				</tr>
-				<tr>
-					<td>勤務状況</td>
+			<div class='container'>
+			<div class='row'>
+			<div class="col-5 pt-3 ">
+				<td><%= image_tag @end_user.get_profile_image, size: '250x250' %></td>
+			</div>
+			<div class="col-7 pt-2">
+				<p class="pl-3">所属部署　　　　　<%= @end_user.department_name %></p>
+				<p class="pl-3">フリガナ　　　　　<%= @end_user.full_name_kana %></p>
+				<p class="pl-3">名前　　　　　　　<%= @end_user.full_name %></p>
+				<p class="pl-3">勤務地　　　　　　<%= @end_user.work_location %></p>
+				<p class="pl-3">電話番号　　　　　<%= @end_user.telephone_number %></p>
+				<p class="pl-3">メールアドレス　　<%= @end_user.email %></p>
+				<p class="pl-3">勤務状況　　　　　
 					<% if @end_user.is_worked == true %>
-						<td colspan="2">出勤中</td>
+						<% if @end_user == current_end_user && @end_user.full_name != "guest user"  %>
+						  <%= link_to "出勤中", update_worked_path, method: :patch %>
+						<% else %>
+	          	出勤中
+	          <% end %>
 					<% else %>
-						<td colspan="2">退勤中</td>
+						<% if @end_user == current_end_user && @end_user.full_name != "guest user"  %>
+						  <%= link_to "退勤中", update_worked_path, method: :patch %>
+						<% else %>
+						退勤中　
+						<% end %>
 					<% end %>
-					<% if @end_user == current_end_user %>
-						<td><%= link_to "変更", update_worked_path, method: :patch %></td>
+				</p>
+				<% if @end_user != current_end_user %>
+				  <p class="pl-3">連携社員　　　　　
+            <% if current_end_user.following?(@end_user) %>
+              <%= link_to "登録済み", end_user_relationships_path(@end_user.id), method: :delete %>
+            <% else %>
+              <%= link_to "未登録", end_user_relationships_path(@end_user.id), method: :post %>
+            <% end %>
+        <% end %>
+        <p class="pl-3">　　　　
+					<% if @end_user == current_end_user && @end_user.full_name != "guest user" %>
+					  <%= link_to "プロフィールを編集する",edit_information_path(current_end_user.id) %>
 					<% end %>
-				</tr>
-				<tr>
-					<td>電話番号</td>
-					<td colspan="2"><%= @end_user.telephone_number %></td>
-				</tr>
-				<tr>
-					<% if @end_user == current_end_user %>
-						<td>
-							<%= link_to "編集する",edit_information_path(current_end_user.id) %>
-						</td>
-					<% end %>
-				</tr>
-			</tbody>
-		</table>
+        </p>
+			</div></div></div>
 	</section>
+</div>
+<div class='col-2'>
+	<% if @end_user == current_end_user && current_end_user.full_name != "guest user" %>
+		<p><%= link_to "予定を投稿",new_schedule_path %></p>
+		<p><%= link_to 'ユーザー投稿予定', user_schedule_path(@end_user.id) %></p>
+	<% end %>
+	<p><%= link_to "全予定一覧",schedules_path %></p>
+	<p><%= link_to "社員一覧",user_index_path %></p>
 </div>
 </div>
 </div>
