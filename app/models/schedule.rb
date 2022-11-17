@@ -17,4 +17,17 @@ class Schedule < ApplicationRecord
   def attended?(end_user)
     attends.where(end_user_id: end_user.id).exists?
   end
+  
+  def self.search_for(content, method)
+    if method == 'perfect'
+      Schedule.where(title: content)
+    elsif method == 'forward'
+      Schedule.where('title LIKE ?', content+'%')
+    elsif method == 'backward'
+      Schedule.where('title LIKE ?', '%'+content)
+    else
+      Schedule.where('title LIKE ?', '%'+content+'%')
+    end
+  end
+  
 end

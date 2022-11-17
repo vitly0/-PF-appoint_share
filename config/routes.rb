@@ -1,8 +1,15 @@
 Rails.application.routes.draw do
+  namespace :admin do
+    get '/search', to: 'searches#search'
+    resources :schedules, only: [:index, :show, :edit, :update, :destroy]
+    resources :end_users, only: [:index, :show, :edit, :update]
+  end
+
   namespace :public do
     get 'end_user/worked'
   end
   scope module: :public do
+    get 'end_users/search', to: 'searches#search'
     devise_scope :end_user do
       post 'end_users/guest_sign_in', to: 'end_users/sessions#guest_sign_in'
     end

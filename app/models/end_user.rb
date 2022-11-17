@@ -49,6 +49,18 @@ class EndUser < ApplicationRecord
     followings.include?(end_user)
   end
   
+  def self.search_for(content, method)
+    if method == 'perfect'
+      EndUser.where(first_name: content)
+    elsif method == 'forward'
+      EndUser.where('first_name LIKE ?', content + '%')
+    elsif method == 'backward'
+      EndUser.where('first_name LIKE ?', '%' + content)
+    else
+      EndUser.where('first_name LIKE ?', '%' + content + '%')
+    end
+  end
+  
   def self.guest
     find_or_create_by!(first_name: 'guest', last_name: 'user', first_name_kana: 'ゲスト', last_name_kana: 'ユーザー'  , email: 'guest@example.com', department_name: '情報システム部', work_location: '本部支店', telephone_number: '00011112222') do |end_user|
       end_user.password = SecureRandom.urlsafe_base64
