@@ -11,24 +11,18 @@
 		<p><%= @schedule.body %></p>
 		<p><%= @schedule.full_day %></p>
 		<p><%= @schedule.location %></p>
-		<% if current_end_user.full_name != "guest user" %>
-		  <%= link_to "編集", edit_admin_schedule_path(@schedule.id) %>
-    <% end %>
+		<%= link_to "編集", edit_admin_schedule_path(@schedule.id) %>
     <p>コメント</p>
     <% @schedule_comments.each do |schedule_comment| %>
     	<%= schedule_comment.end_user.full_name %>
       <%= schedule_comment.comment %>
-      <% if current_end_user.full_name != "guest user" %>
-        <%= link_to "削除", schedule_schedule_comment_path(@schedule, schedule_comment), method: :delete %>
-      <% end %>
+      <%= link_to "削除", schedule_schedule_comment_path(@schedule, schedule_comment), method: :delete %>
     <% end %>
     <p>報告</p>
     <% @reports.each do |report| %>
     	<%= report.end_user.full_name %>
       <%= report.comment %>
-      <% if current_end_user.full_name != "guest user" %>
-        <%= link_to "削除", schedule_report_path(@schedule, report), method: :delete %>
-      <% end %>
+      <%= link_to "削除", schedule_report_path(@schedule, report), method: :delete %>
     <% end %>
     <p>参加者</p>
     <% @attends.each do |attend| %>
